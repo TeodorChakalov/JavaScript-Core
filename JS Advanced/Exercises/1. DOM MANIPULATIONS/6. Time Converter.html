@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Time Converter</title>
+    <script src="timeConverter.js"></script>
+    <style>
+        label, input {
+            display: inline-block;
+            width: 5em;
+        }
+
+        label {
+            text-align: right;
+        }
+    </style>
+</head>
+<body onload="attachEventsListeners()">
+<h1>Time Converter</h1>
+<div>
+    <label for="days">Days: </label>
+    <input type="text" id="days">
+    <input id="daysBtn" type="button" value="Convert">
+</div>
+<div>
+    <label for="hours">Hours: </label>
+    <input type="text" id="hours">
+    <input id="hoursBtn" type="button" value="Convert">
+</div>
+<div>
+    <label for="minutes">Minutes: </label>
+    <input type="text" id="minutes">
+    <input id="minutesBtn" type="button" value="Convert">
+</div>
+<div>
+    <label for="seconds">Seconds: </label>
+    <input type="text" id="seconds">
+    <input id="secondsBtn" type="button" value="Convert">
+</div>
+</body>
+</html>
+
+<script>
+    function attachEventsListeners() {
+        let firstValue = document.getElementById('days');
+        let secondValue = document.getElementById('hours');
+        let thirdValue = document.getElementById('minutes');
+        let forthValue = document.getElementById('seconds');
+
+        let firstButton = document.getElementById('daysBtn');
+        let secondButton = document.getElementById('hoursBtn');
+        let thirdButton = document.getElementById('minutesBtn');
+        let forthButton = document.getElementById('secondsBtn');
+        
+        firstButton.addEventListener('click', function () {
+            secondValue.value = firstValue.value * 24;
+            thirdValue.value = firstValue.value * 24 * 60;
+            forthValue.value = firstValue.value * 24 * 60 * 60;
+        });
+
+        secondButton.addEventListener('click', function () {
+            firstValue.value = secondValue.value / 24;
+            thirdValue.value = secondValue.value * 60;
+            forthValue.value = secondValue.value * 60 * 60;
+        });
+
+        thirdButton.addEventListener('click', function () {
+            firstValue.value = thirdValue.value /60 / 24;
+            secondValue.value = thirdValue.value / 60;
+            forthValue.value = thirdValue.value * 60;
+        });
+
+        forthButton.addEventListener('click', function () {
+            firstValue.value = forthValue.value / 60 / 60 / 24;
+            secondValue.value = forthValue.value / 60 / 60;
+            thirdValue.value = forthValue.value / 60;
+        });
+    }    
+</script>
+
+</body>
+</html>

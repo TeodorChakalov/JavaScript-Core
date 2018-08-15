@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Increment Counter</title>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"
+            integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="wrapper">
+</div>
+<script src="incrementCounter.js"></script>
+<script>
+    window.onload = function(){
+        increment("#wrapper");
+    }
+
+    function increment(root){
+        let currentElement = $(root);
+        currentElement.append($('<textarea>').addClass('counter').attr("disabled", "true").val(0));
+        currentElement.append($('<button>').addClass('btn').attr("id", "incrementBtn").text('Increment'));
+        currentElement.append($('<button>').addClass('btn').attr("id", "addBtn").text('Add'));
+        currentElement.append($('<ul>').addClass('results'));
+
+        $('#incrementBtn').on('click', function () {
+            let textArea = $('textarea');
+            textArea.val(Number(textArea.val())+1);
+        })
+
+        $('#addBtn').on('click', function () {
+            let list = $('.results').append($('<li>').text($('textarea').val()));
+        })
+    }
+</script>
+</body>
+</html>
+
+</body>
+</html>

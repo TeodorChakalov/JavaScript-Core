@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Validation</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"
+            integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="wrapper">
+    <form id="registerForm">
+        <fieldset id="userInfo">
+            <legend>User Information:</legend>
+            <div class="pairContainer">
+                <label for="username">Userame:</label>
+                <input id="username" type="text">
+            </div>
+            <div class="pairContainer">
+                <label for="email">Email:</label>
+                <input id="email" type="text">
+            </div>
+            <div class="pairContainer">
+                <label for="password">Passwrod:</label>
+                <input id="password" type="password">
+            </div>
+            <div class="pairContainer">
+                <label for="confirm-password">Confirm Password:</label>
+                <input id="confirm-password" type="password">
+            </div>
+            <div class="pairContainer">
+                <label for="company">Is Company?</label>
+                <input id="company" type="checkbox">
+            </div>
+        </fieldset>
+        <fieldset id="companyInfo" style="display: none;">
+            <legend>Company Informaion:</legend>
+            <div class="pairContainer">
+                <label for="companyNumber">Company Number</label>
+                <input id="companyNumber" type="number">
+            </div>
+        </fieldset>
+        <button id="submit">Submit</button>
+    </form>
+    <div id="valid" style="display: none">Valid</div>
+</div>
+<script src="../../../../New%20folder/formValidation.js"></script>
+<script>
+    window.onload = function(){
+        validate();
+    }
+    function validate() {
+        let username = $("#username");
+        let email = $("#email");
+        let password = $("#password");
+        let confirmPass = $("#confirm-password");
+        let submitBtn = $("#submit");
+        let company = $("#company");
+        let companyInfo = $("#companyInfo");
+        let fieldsAreValid = true;
+
+        company.on("change", function () {
+            if (company.is(":checked")) {
+                companyInfo.css("display", "block");
+            } else {
+                companyInfo.css("display", "none");
+            }
+        });
+
+        submitBtn.on("click", function (event) {
+            event.preventDefault();
+            checkInputFields();
+            showMessage();
+            fieldsAreValid = true;
+        });
+
+        function checkInputFields() {
+            isItValid(username, /^[0-9A-Za-z]{3,20}$/);
+            isItValid(email, /^.*@.*?[\.]+.*$/);
+
+            if ((password.val() === confirmPass.val())) {
+                isItValid(password, /^(\w{5,15})$/);
+                isItValid(confirmPass, /^(\w{5,15})$/);
+            } else {
+                password.css("border-color", "red");
+                confirmPass.css("border-color", "red");
+                fieldsAreValid = false;
+            }
+            if (company.is(":checked")) {
+                companyValidNumber();
+            }
+        }
+
+        function isItValid(element, pattern) {
+            if (pattern.test(element.val())) {
+                element.css("border", "none");
+            } else {
+                element.css("border-color", "red");
+                fieldsAreValid = false;
+            }
+        }
+
+        function companyValidNumber() {
+            let number = +$('#companyNumber').val();
+            if (number < 1000 || number > 9999) {
+                $('#companyNumber').css("border-color", "red");
+                fieldsAreValid = false;
+            } else {
+                $('#companyNumber').css("border", "none");
+            }
+        }
+
+        function showMessage() {
+            if (fieldsAreValid) {
+                $("#valid").css("display", "block");
+            } else{
+                $("#valid").css("display", "none");
+            }
+        }
+    }
+
+    // function validate() {
+    //     let username = $('#username');
+    //     let email = $('#email');
+    //     let password = $('#password');
+    //     let confirmPassword = $('#confirm-password');
+    //     let companyCheckbox = $('#company');
+    //     let companyNumber = $('#companyNumber');
+    //     let companyInfo = $('#companyInfo');
+    //     let submitBtn = $('#submit');
+    //     let validationDiv = $('#valid');
+    //     let allIsValid = true;
+    //
+    //     companyCheckbox.on('change', function () {
+    //         if (companyCheckbox.is(':checked')) {
+    //             companyInfo.css('display', 'block');
+    //         } else {
+    //             companyInfo.css('display', 'none');
+    //         }
+    //     });
+    //     submitBtn.on('click', function (ev) {
+    //         ev.preventDefault();
+    //         validateForm();
+    //         validationDiv.css('display', allIsValid ? 'block' : 'none');
+    //         allIsValid = true;
+    //     });
+    //
+    //     function validateForm() {
+    //         validateInputWithRegex(username, /^[A-Za-z\d]{3,20}$/g);
+    //         validateInputWithRegex(email, /^.*?@.*?\..*$/g);
+    //         if (confirmPassword.val() === password.val()) {
+    //             validateInputWithRegex(password, /^\w{5,15}$/g);
+    //             validateInputWithRegex(confirmPassword, /^\w{5,15}$/g);
+    //         } else {
+    //             password.css('border', 'solid red');
+    //             confirmPassword.css('border', 'solid red');
+    //             allIsValid = false;
+    //         }
+    //
+    //         if (companyCheckbox.is(':checked')) {
+    //             validateCompanyInfo();
+    //         }
+    //
+    //         function validateInputWithRegex(input, pattern) {
+    //             if (pattern.test(input.val())) {
+    //                 input.css('border', 'none');
+    //             } else {
+    //                 input.css('border', 'solid red');
+    //                 allIsValid = false;
+    //             }
+    //         }
+    //
+    //         function validateCompanyInfo() {
+    //             let numValue = +companyNumber.val();
+    //             if (numValue >= 1000 && numValue <= 9999) {
+    //                 companyNumber.css('border', 'none');
+    //             } else {
+    //                 companyNumber.css('border', 'solid red');
+    //                 allIsValid = false;
+    //             }
+    //         }
+    //     }
+    // }
+</script>
+</body>
+</html>

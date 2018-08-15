@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Manager</title>
+    <style>
+        body{padding:30px}div{margin-bottom:20px}table{border:1px solid #000;border-collapse:collapse;margin:auto}caption{font-size:20px;font-weight:700;color:#fff;background:#000;padding:5px}td,th{padding:5px 20px;text-align:center}tfoot td,th{background:#ccc}tr:nth-child(odd){background:#eee}tr:nth-child(even){background:#ddd}tfoot{border-top:1px solid #000}tfoot>tr td{font-style:italic;font-weight:700}button{margin:auto;cursor:pointer}
+    </style>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+
+<div id="amazon"></div>
+
+<div id="ebay"></div>
+
+<div id="walmart"></div>
+
+<script src="./solution.js"></script>
+<script>
+    $(function() {
+        let paymentMangersData = [
+            ['amazon', 'Amazon'],
+            ['ebay', 'eBay'],
+            ['walmart', 'Walmart'],
+            // Others
+        ]
+
+        for (let [target, title] of paymentMangersData) {
+            let paymentManager = new PaymentManager(title);
+            paymentManager.render(target);
+        }
+    })
+
+    class PaymentManager {
+        constructor(title) {
+            this.title = title;
+        }
+
+        render(id) {
+            $(`#${id}`).append($("<table>").append($("<caption>").text(`${this.title} Payment Manager`))
+                .append($("<thead>")
+                    .append($("<tr>")
+                        .append($("<th class='name'>Name</th>"))
+                        .append($("<th class='category'>Category</th>"))
+                        .append($("<th class='price'>Price</th>"))
+                        .append($("<th>Actions</th>"))))
+                .append($("<tbody class='payments'></tbody>"))
+                .append($("<tfoot class='input-data'>")
+                    .append($("<tr>")
+                        .append($("<td><input name='name' type='text'></td>"))
+                        .append($("<td><input name='category' type='text'></td>"))
+                        .append($("<td><input name='price' type='number'></td>"))
+                        .append($("<td><button>Add</button></td>").on("click", addRow)))));
+
+            function addRow() {
+                let name = $(`#${id} tfoot [name='name']`);
+                let category = $(`#${id} tfoot [name='category']`);
+                let price = $(`#${id} tfoot [name='price']`);
+
+                if (name.val() !== "" && category.val() !== "" && price.val() !== "") {
+                    $(`#${id} table .payments`).append($("<tr>")
+                        .append($("<td>").text(name.val()))
+                        .append($("<td>").text(category.val()))
+                        .append($("<td>").text(Number(price.val())))
+                        .append($("<td><button>Delete</button></td>")
+                            .on("click", deleteRow)))
+                }
+                name.val("");
+                category.val("");
+                price.val("");
+            }
+
+            function deleteRow() {
+                $(this).parent().remove();
+            }
+        }
+    }
+</script>
+</body>
+</html>

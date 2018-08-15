@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Table Builder</title>
+    <style>td, th {
+        background: #DDD;
+        padding: 5px
+    }</style>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+<div id="main"></div>
+<script>
+    function tableBuilder(selector) {
+        function createTable(colNames) {
+            let table = $("<table>");
+            let tr = $("<tr>");
+            tr.appendTo(table);
+
+            for (let colName of colNames){
+                tr.append($("<th>").text(colName));
+            }
+            tr.append($("<th>Action</th>"));
+            $(selector).empty();
+
+            $(selector).append(table);
+        }
+
+        function fillData(dataRows) {
+            for (let dataRow of dataRows) {
+                let tr = $("<tr>");
+
+                for (let cellData of dataRow){
+                    tr.append($("<td>").text(cellData));
+                }
+
+                let delButton = $("<button>Delete</button>");
+
+                delButton.click(function () {
+                    $(this).parent().parent().remove();
+                });
+
+                tr.append($("<td>").append(delButton));
+                tr.appendTo($(selector)).appendTo($('table'));
+            }
+        }
+
+        return {createTable, fillData};
+    }
+</script>
+<script>
+    $(function () {
+        let builder = tableBuilder("#main");
+        builder.createTable(['Name', 'Town']);
+        builder.fillData([
+            ['Maria', 'Sofia'],
+            ['Kiril', 'Varna'],
+            ['Ani <new>', 'Ruse'],
+        ]);
+    });
+</script>
+</body>
+</html>

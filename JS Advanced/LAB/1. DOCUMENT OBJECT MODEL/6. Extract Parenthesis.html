@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p id="content">This is some text (this must be extracted) not this (but this too)!</p>
+<script>
+    function extract(elementId) {
+        let para = document.getElementById(elementId).textContent;
+        let pattern = /(\([^)]+\))/g;
+
+        let result = [];
+
+        let match;
+
+        while(match = pattern.exec(para)){
+            result.push(match);
+        }
+        return result.join('; ');
+    }
+    console.log(extract('content'));
+</script>
+</body>
+</html>
